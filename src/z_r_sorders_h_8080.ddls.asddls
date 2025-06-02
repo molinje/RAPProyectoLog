@@ -9,6 +9,9 @@
 }
 define root view entity z_r_sorders_h_8080 
 as select from zsorders_h_8080
+
+composition [0..*] of z_r_sord_item_8080 as _OrderItem
+
 {
     key order_uuid  as OrderUUID,
     order_id        as OrderID,
@@ -19,5 +22,7 @@ as select from zsorders_h_8080
     create_on       as CreateOn,
     delivery_date   as DeliveryDate,
     order_status    as OrderStatus,
-    image_url       as ImageUrl
+    image_url       as ImageUrl,
+    
+    _OrderItem
 }
