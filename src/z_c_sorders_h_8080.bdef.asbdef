@@ -1,0 +1,38 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for z_c_sorders_h_8080 alias SalesOrder
+{
+  use create;
+  use update;
+  use delete;
+
+  use action validateEmailfield;
+  use action validateCountryfield;
+  use action validateFirstNamefield;
+  use action validateLastNamefield;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use association _OrderItem { create; with draft; }
+}
+
+define behavior for z_c_sord_item_8080 alias OrderItem
+{
+  use update;
+  use delete;
+
+  use action validateNameField;
+  use action validateDescriptionF;
+  use action validatePriceField;
+  use action validateCurrencyCodeF;
+  use action validateValuesProdF;
+  use action validateUnitMeasureF;
+
+  use association _SOrder { with draft; }
+}

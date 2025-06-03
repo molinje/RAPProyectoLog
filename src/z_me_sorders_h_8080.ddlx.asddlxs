@@ -1,0 +1,32 @@
+@Metadata.layer: #CORE
+
+@UI: { headerInfo: { typeName: 'sales Order',
+                     typeNamePlural: 'Travels',
+                     title: {
+                        type: #STANDARD,
+                        value: 'OrderID' } },
+        presentationVariant: [{ sortOrder: [{ by: 'OrderID',
+                                              direction: #DESC }],
+                                visualizations: [{ type: #AS_LINEITEM }] }] }
+
+annotate entity z_c_sorders_h_8080
+    with 
+{
+// @UI.facet permite que cada item del listado tenga Navegación,
+// al final de cada item apareceria un signo asi: >
+ @UI.facet: [{ id: 'SalesOrder',
+                purpose: #STANDARD,
+                type: #IDENTIFICATION_REFERENCE,
+                label: 'Sales Order',
+                position: 10 },
+// Pestañas dentro de la Mavegación
+               { id: 'OrderItem',
+                purpose: #STANDARD,
+                type: #LINEITEM_REFERENCE,
+                label: 'Item',
+                position: 20,
+                targetElement: '_OrderItem' }]
+  @UI.hidden: true
+  OrderUUID;
+    
+}
