@@ -23,6 +23,7 @@ as projection on z_r_sord_item_8080
     Depth,
     Quantity,
     UnitMeasure,
+    LastChangedAt,
     /* Associations */
     _Currency,
     _SOrder:  redirected to parent z_i_sorders_h_8080

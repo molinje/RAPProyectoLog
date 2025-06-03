@@ -15,6 +15,9 @@ as projection on z_r_sorders_h_8080
     DeliveryDate,
     OrderStatus,
     ImageUrl,
+    LocalLastChangedAt,
+    LastChangedAt,
+    
     /* Associations */
     _OrderItem : redirected to composition child z_i_sord_item_8080
 }

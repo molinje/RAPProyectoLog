@@ -27,6 +27,7 @@ as projection on z_r_sord_item_8080
                                                    element: 'UnitOfMeasure'},
                                                   useForValidation: true }]
     UnitMeasure,
+    LastChangedAt,
     /* Associations */
     _Currency,
     _SOrder: redirected to parent z_c_sorders_h_8080

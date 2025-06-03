@@ -1,29 +1,177 @@
 managed;
 strict ( 2 );
+with draft;
 
 define behavior for z_r_sorders_h_8080 alias SalesOrder
 implementation in class zbp_r_sorders_h_8080 unique
 persistent table zsorders_h_8080
+draft table zsorders_h_8080d
 lock master
-authorization master ( instance )
+total etag LastChangedAt
+authorization master ( instance, global )
+etag master LocalLastChangedAt
 //etag master <field_name>
 {
-  create ( authorization : global );
+  create ( precheck );
   update;
   delete;
-  field ( readonly ) OrderUUID;
-  association _OrderItem { create; }
+
+  // "features : instance" son caracteristicas de comportamiento para los campos
+
+  association _OrderItem { create ( features : instance, authorization : update ); with draft; }
+
+  field ( numbering : managed, readonly ) OrderUUID;
+
+  field ( readonly )    OrderID,
+                        CreateOn,
+                        DeliveryDate,
+                        OrderStatus ,
+                        LocalLastChangedAt,
+                        LastChangedAt;
+
+ field ( mandatory )    Email,
+                        FirstName,
+                        LastName,
+                        Country;
+
+ // ---- Determinaciones o metodos que la aplicacion va a generar en la clase
+ // MMetodo para determinar el campo OrderID
+ determination setOrderNumber on save { create;} // siempre se calcula
+ determination setOrderStatus on modify { create;} // siempre se calcula
+
+  // -- validaciones --
+  validation validateEmail on save { create; field Email; }
+  validation validateCountry on save { create; field Country; }
+  validation validateFirstName on save { create; field FirstName; }
+  validation validateLastName on save { create; field LastName; }
+
+  determine action validateEmailfield     { validation validateEmail; }
+  determine action validateCountryfield   { validation validateCountry; }
+  determine action validateFirstNamefield { validation validateFirstName; }
+  determine action validateLastNamefield  { validation validateLastName; }
+
+    // se pueden tener Side effects en base a las validaciones
+  // manejar efectos secundarios
+  side effects {
+
+   // se ejecuta cada vez que se cambia el CustomerID y genera los mensajes corresodientes en caso
+   // que se necesite, por ejemplo , mensaje y color en rojo el campo si el usuario ha colocado un
+   // valor que no cumple con la validacion
+
+  determine action validateEmailfield executed on field Email affects messages;
+  determine action validateCountryfield executed on field Country affects messages;
+  determine action validateFirstNamefield executed on field FirstName affects messages;
+  determine action validateLastNamefield executed on field LastName affects messages;
+
+  }
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume with additional implementation;
+
+    draft determine action Prepare
+  {
+
+    validation validateEmail;
+    validation validateCountry;
+    validation validateFirstName;
+    validation validateLastName;
+    validation OrderItem~validateName;
+    validation OrderItem~validateDescription;
+    validation OrderItem~validatePrice;
+    validation OrderItem~validateCurrencyCode;
+    validation OrderItem~validateValuesProd;
+    validation OrderItem~validateUnitMeasure;
+  }
+
+  mapping for zsorders_h_8080
+  {
+        OrderUUID           =   order_uuid ;
+        OrderID             =   order_id;
+        Email               =   email;
+        FirstName           =   first_name;
+        LastName            =   last_name;
+        Country             =   country;
+        CreateOn            =   create_on;
+        DeliveryDate        =   delivery_date;
+        OrderStatus         =   order_status;
+        ImageUrl            =   image_url;
+        LocalLastChangedAt  =   local_last_changed_at;
+        LastChangedAt       =   last_changed_at;
+
+  }
+
 }
 
-define behavior for z_r_sord_item_8080 alias salesOrderItem
+define behavior for z_r_sord_item_8080 alias OrderItem
 implementation in class zbp_r_sord_item_8080 unique
 persistent table zsord_item_8080
+draft table zsord_item_8080d
 lock dependent by _SOrder
 authorization dependent by _SOrder
-//etag master <field_name>
+etag master LastChangedAt
 {
   update;
   delete;
+  association _SOrder { with draft; }
+
   field ( readonly ) OrderUUID, OrderItemID;
-  association _SOrder;
+  field ( readonly ) SorderID, ReselaseDate, LastChangedAt;
+  field (mandatory ) Name, Description, DiscountDate, Price, CurrencyCode,
+                     Height, Width, Depth, Quantity, UnitMeasure;
+
+
+  determination setOrderItemID on save { create;} // siempre se calcula
+  determination setReselaseDate on modify { create;} // siempre se calcula
+
+    // -- validaciones --
+  validation validateName         on save { create; field Name; }
+  validation validateDescription  on save { create; field Description; }
+  validation validatePrice        on save { create; field Price; }
+  validation validateCurrencyCode on save { create; field CurrencyCode; }
+  validation validateValuesProd   on save { create; field Height, Width, Depth, Quantity; }
+  validation validateUnitMeasure  on save { create; field UnitMeasure; }
+
+
+
+    determine action validateNameField     { validation  validateName        ;}
+    determine action validateDescriptionF  { validation  validateDescription ;}
+    determine action validatePriceField    { validation  validatePrice       ;}
+    determine action validateCurrencyCodeF { validation  validateCurrencyCode;}
+    determine action validateValuesProdF   { validation  validateValuesProd  ;}
+    determine action validateUnitMeasureF  { validation  validateUnitMeasure ;}
+
+    side effects {
+
+    determine action validateNameField     executed on field Name affects messages;
+    determine action validateDescriptionF  executed on field Description   affects messages;
+    determine action validatePriceField    executed on field Price         affects messages;
+    determine action validateCurrencyCodeF executed on field CurrencyCode  affects messages;
+    determine action validateValuesProdF   executed on field UnitMeasure   affects messages;
+
+
+    }
+
+
+
+  mapping for zsord_item_8080
+  {
+        OrderUUID       =  order_uuid;
+        OrderItemID     =  order_item_id;
+        SorderID        =  sorder_id;
+        Name            =  name;
+        Description     =  description;
+        ReselaseDate    =  reselase_date;
+        DiscountDate    =  discount_date;
+        Price           =  price;
+        CurrencyCode    =  currency_code;
+        Height          =  height;
+        Width           =  width;
+        Depth           =  depth;
+        Quantity        =  quantity;
+        UnitMeasure     =  unit_measure;
+        LastChangedAt   =  last_changed_at;
+  }
+
 }
