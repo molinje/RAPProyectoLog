@@ -1,0 +1,29 @@
+managed;
+strict ( 2 );
+
+define behavior for z_r_sorders_h_8080 alias SalesOrder
+implementation in class zbp_r_sorders_h_8080 unique
+persistent table zsorders_h_8080
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) OrderUUID;
+  association _OrderItem { create; }
+}
+
+define behavior for z_r_sord_item_8080 alias salesOrderItem
+implementation in class zbp_r_sord_item_8080 unique
+persistent table zsord_item_8080
+lock dependent by _SOrder
+authorization dependent by _SOrder
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) OrderUUID, OrderItemID;
+  association _SOrder;
+}
