@@ -1,11 +1,15 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Orders items - Consumption entity'
 @Metadata.ignorePropagatedAnnotations: true
+@Metadata.allowExtensions: true
+@Search.searchable: true
 define view entity z_c_sord_item_8080 
 as projection on z_r_sord_item_8080
 {
+
     key OrderUUID,
     key OrderItemID,
+    @Search.defaultSearchElement: true    
     SorderID,
     Name,
     Description,

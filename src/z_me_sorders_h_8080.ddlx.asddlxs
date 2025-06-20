@@ -1,7 +1,7 @@
 @Metadata.layer: #CORE
 
 @UI: { headerInfo: { typeName: 'sales Order',
-                     typeNamePlural: 'Travels',
+                     typeNamePlural: 'sales Orders',
                      title: {
                         type: #STANDARD,
                         value: 'OrderID' } },
@@ -28,5 +28,44 @@ annotate entity z_c_sorders_h_8080
                 targetElement: '_OrderItem' }]
   @UI.hidden: true
   OrderUUID;
+  
+  @UI: { lineItem: [{ position: 10, importance: #HIGH }],
+         identification: [{ position: 10 }],
+         selectionField: [{ position: 10 }]}
+  OrderID;
+  
+    @UI: { lineItem: [{ position: 20, importance: #HIGH }],
+         identification: [{ position: 20 }],
+         selectionField: [{ position: 20 }]}
+  Email;
+  
+  @UI: { lineItem: [{ position: 30, importance: #HIGH }],
+         identification: [{ position: 30 }],
+         selectionField: [{ position: 30 }]}
+  FirstName;
+  
+  @UI: { lineItem: [{ position: 40, importance: #HIGH }],
+         identification: [{ position: 40 }],
+         selectionField: [{ position: 40 }]}  
+  LastName;
+  
+  @UI: { lineItem: [{ position: 50, importance: #MEDIUM }],
+         identification: [{ position: 50 }]}
+  Country;
+  
+  @UI: { lineItem: [{ position: 60, importance: #MEDIUM }],
+         identification: [{ position: 60 }]}
+  CreateOn;
+  
+  @UI: { lineItem: [{ position: 70, importance: #MEDIUM }],
+         identification: [{ position: 70 }]}  
+  DeliveryDate;
+  @UI: { lineItem: [{ position: 80, importance: #MEDIUM }],
+          identification: [{ position: 80 }]}
+  OrderStatus;
+  @UI.hidden: true  
+  LocalLastChangedAt;
+  @UI.hidden: true  
+  LastChangedAt;
     
 }

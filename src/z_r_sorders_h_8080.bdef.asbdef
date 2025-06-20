@@ -17,6 +17,7 @@ etag master LocalLastChangedAt
   delete;
 
   // "features : instance" son caracteristicas de comportamiento para los campos
+  // por ejemplo que se activen o desactiven campos, habilitar edicion o no en campos , etc
 
   association _OrderItem { create ( features : instance, authorization : update ); with draft; }
 
@@ -116,9 +117,10 @@ etag master LastChangedAt
   delete;
   association _SOrder { with draft; }
 
-  field ( readonly ) OrderUUID, OrderItemID;
+
+  field ( readonly ) OrderUUID;
   field ( readonly ) SorderID, ReselaseDate, LastChangedAt;
-  field (mandatory ) Name, Description, DiscountDate, Price, CurrencyCode,
+  field (mandatory ) OrderItemID, Name, Description, DiscountDate, Price, CurrencyCode,
                      Height, Width, Depth, Quantity, UnitMeasure;
 
 

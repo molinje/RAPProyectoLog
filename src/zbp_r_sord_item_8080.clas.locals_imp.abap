@@ -45,6 +45,54 @@ CLASS lhc_OrderItem IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setOrderItemID.
+
+  DATA: items_order_u type table for update z_r_sorders_h_8080\\OrderItem,
+        max_item_id type zde_posnr_8080.
+
+        read entities OF z_r_sorders_h_8080 in local mode
+        entity OrderItem by \_SOrder
+        fields ( OrderUUID )
+        WITH CORRESPONDING #( keys )
+        RESULT data(sorders).
+
+        loop at sorders into data(sorder).
+
+         read entities OF z_r_sorders_h_8080 in local mode
+        entity SalesOrder by \_OrderItem
+        fields ( OrderItemID )
+        WITH VALUE #( ( %tky = sorder-%tky ) )
+        RESULT data(sorderitems).
+
+        max_item_id = '0000'.
+
+
+
+          loop at sorderitems into data(sorderitem).
+            if sorderitem-OrderItemID > max_item_id.
+             max_item_id = sorderitem-OrderItemID.
+            ENDIF.
+        endloop.
+
+       loop at sorderitems into sorderitem where OrderItemID is INITIAL.
+           max_item_id += 1.
+
+           APPEND value #( %tky = sorderitem-%tky
+                           OrderItemID = max_item_id ) to items_order_u.
+
+
+        endloop.
+
+        endloop.
+
+        if items_order_u is not INITIAL.
+
+            MODIFY ENTITIES OF z_r_sorders_h_8080 in local mode
+            ENTITY OrderItem
+            UPDATE FIELDS ( OrderItemID )
+            WITH items_order_u.
+
+        ENDIF.
+
   ENDMETHOD.
 
   METHOD validateCurrencyCode.

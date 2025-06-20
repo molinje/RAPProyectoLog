@@ -1,0 +1,58 @@
+@Metadata.layer: #CORE
+@UI: { headerInfo: { typeName: 'Sales Order item',
+                     typeNamePlural: 'Items',
+                     title: { type: #STANDARD,
+                              value: 'OrderItemID' } } }
+annotate entity z_c_sord_item_8080
+    with 
+{
+
+   @UI.facet: [ { id: 'SalesOrderItem',
+                 purpose: #STANDARD,
+                 type: #IDENTIFICATION_REFERENCE,
+                 label: 'Sales Order Items',
+                 position: 10 }  ]
+   @UI.hidden:true              
+   OrderUUID;
+   @UI.hidden:true
+   SorderID;
+   @UI: { lineItem:       [ { position: 10, importance: #HIGH } ],
+         identification: [ { position: 10 } ] }  
+   OrderItemID;
+   @UI: { lineItem:       [ { position: 20, importance: #HIGH } ],
+         identification: [ { position: 20 } ] }
+   Name;
+   @UI: { lineItem:       [ { position: 30, importance: #HIGH } ],
+         identification: [ { position: 30 } ] }
+   Description;
+   @UI: { lineItem:       [ { position: 40, importance: #MEDIUM } ],
+         identification: [ { position: 40 } ] }
+   ReselaseDate;
+   @UI: { lineItem:       [ { position: 50, importance: #MEDIUM } ],
+         identification: [ { position: 50 } ] }
+   DiscountDate;
+   @UI: { lineItem:       [ { position: 60, importance: #MEDIUM } ],
+         identification: [ { position: 60 } ] }
+   Price;
+   @UI: { lineItem:       [ { position: 70, importance: #MEDIUM } ],
+         identification: [ { position: 70 } ] }
+   CurrencyCode;
+   @UI: { lineItem:       [ { position: 80, importance: #MEDIUM } ],
+         identification: [ { position: 80 } ] }
+   Height;
+   @UI: { lineItem:       [ { position: 90, importance: #LOW } ],
+         identification: [ { position: 90 } ] }
+   Width;
+   @UI: { lineItem:       [ { position: 100, importance: #LOW } ],
+         identification: [ { position: 100 } ] }
+   Depth;
+   @UI: { lineItem:       [ { position: 120, importance: #LOW } ],
+         identification: [ { position: 120 } ] }
+   Quantity;
+   @UI: { lineItem:       [ { position: 140, importance: #LOW } ],
+         identification: [ { position: 140 } ] }
+   UnitMeasure;
+   @UI.hidden: true
+   LastChangedAt;
+    
+}

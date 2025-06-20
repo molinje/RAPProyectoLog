@@ -48,6 +48,13 @@ CLASS lhc_SalesOrder IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD precheck_create.
+
+*     read entities of z_r_sorders_h_8080  in local mode
+*         entity SalesOrder
+*         fields ( OrderID )
+*         with corresponding #( keys )
+*         result data(orders).
+
   ENDMETHOD.
 
   METHOD Resume.
@@ -57,6 +64,28 @@ CLASS lhc_SalesOrder IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setOrderNumber.
+
+   read entities of z_r_sorders_h_8080  in local mode
+         entity SalesOrder
+         fields ( OrderID )
+         with corresponding #( keys )
+         result data(orders).
+
+    delete orders where OrderID is not initial.
+
+    check orders is not initial.
+
+    select single from zsorders_h_8080
+           fields max( order_id )
+           into @data(max_OrderId).
+
+    modify entities of z_r_sorders_h_8080 in local mode
+           entity SalesOrder
+           update fields ( OrderID )
+           with value #( for order in orders index into i ( %tky     = order-%tky
+                                                              OrderID = max_OrderId + i ) ).
+
+
   ENDMETHOD.
 
   METHOD validateCountry.
