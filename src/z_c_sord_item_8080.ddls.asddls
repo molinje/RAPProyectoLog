@@ -8,7 +8,8 @@ as projection on z_r_sord_item_8080
 {
 
     key OrderUUID,
-    key OrderItemID,
+    key OrderItemUUID,
+    OrderItemID,
     @Search.defaultSearchElement: true    
     SorderID,
     Name,

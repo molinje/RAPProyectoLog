@@ -88,7 +88,7 @@ CLASS zcl_carga_data_so_8080 IMPLEMENTATION.
 
     "Delete possible entries; insert 1 entries
     delete from zsorders_h_8080.
-    insert zsorders_h_8080 from table @lt_sorder.
+*    insert zsorders_h_8080 from table @lt_sorder.
 
     if sy-subrc eq 0.
       out->write( |Ordenes de venta: { sy-dbcnt } registros insertados| ).
@@ -320,7 +320,7 @@ CLASS zcl_carga_data_so_8080 IMPLEMENTATION.
 
     "Delete possible entries; insert 1 entries
     delete from zsord_item_8080.
-    insert zsord_item_8080 from table @lt_sorder_item.
+*    insert zsord_item_8080 from table @lt_sorder_item.
 
     if sy-subrc eq 0.
       out->write( |Detalle Ordenes de venta: { sy-dbcnt } registros insertados| ).

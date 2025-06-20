@@ -15,7 +15,8 @@ association [0..1] to I_Currency         as _Currency      on $projection.Curren
 
 {
     key order_uuid      as OrderUUID,
-    key order_item_id   as OrderItemID,
+    key order_item_uuid as OrderItemUUID,
+    order_item_id       as OrderItemID,
     sorder_id           as SorderID,                                      
     name                as Name, 
     description         as Description,

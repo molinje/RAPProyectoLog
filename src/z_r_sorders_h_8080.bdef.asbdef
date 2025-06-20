@@ -117,11 +117,11 @@ etag master LastChangedAt
   delete;
   association _SOrder { with draft; }
 
-
+  field ( numbering : managed, readonly ) OrderItemUUID;
   field ( readonly ) OrderUUID;
   field ( readonly ) SorderID, ReselaseDate, LastChangedAt;
-  field (mandatory ) OrderItemID, Name, Description, DiscountDate, Price, CurrencyCode,
-                     Height, Width, Depth, Quantity, UnitMeasure;
+  field (mandatory ) OrderItemID, Name, Description, DiscountDate, Price,
+                     Height, Width, Depth, Quantity;
 
 
   determination setOrderItemID on save { create;} // siempre se calcula
@@ -160,6 +160,7 @@ etag master LastChangedAt
   mapping for zsord_item_8080
   {
         OrderUUID       =  order_uuid;
+        OrderItemUUID   =  order_item_uuid;
         OrderItemID     =  order_item_id;
         SorderID        =  sorder_id;
         Name            =  name;
