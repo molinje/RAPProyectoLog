@@ -60,9 +60,13 @@ annotate entity z_c_sorders_h_8080
   @UI: { lineItem: [{ position: 70, importance: #MEDIUM }],
          identification: [{ position: 70 }]}  
   DeliveryDate;
+  //@UI.hidden: true 
   @UI: { lineItem: [{ position: 80, importance: #MEDIUM }],
           identification: [{ position: 80 }]}
   OrderStatus;
+  @UI: { lineItem: [{ position: 90, importance: #MEDIUM }],
+          identification: [{ position: 90 }]}
+  SOStatusText; 
   @UI.hidden: true  
   LocalLastChangedAt;
   @UI.hidden: true  

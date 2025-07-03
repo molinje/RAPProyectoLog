@@ -16,7 +16,7 @@ CLASS lhc_SalesOrder DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS Resume FOR MODIFY
       IMPORTING keys FOR ACTION SalesOrder~Resume.
 
-    METHODS setOrderStatus FOR DETERMINE ON MODIFY
+    METHODS setOrderStatus FOR DETERMINE ON SAVE
       IMPORTING keys FOR SalesOrder~setOrderStatus.
 
     METHODS setOrderNumber FOR DETERMINE ON SAVE
@@ -25,8 +25,11 @@ CLASS lhc_SalesOrder DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS validateCountry FOR VALIDATE ON SAVE
       IMPORTING keys FOR SalesOrder~validateCountry.
 
-    METHODS validateEmail FOR VALIDATE ON SAVE
+     METHODS validateEmail FOR VALIDATE ON SAVE
       IMPORTING keys FOR SalesOrder~validateEmail.
+
+    METHODS validateDeliveryDate FOR VALIDATE ON SAVE
+      IMPORTING keys FOR SalesOrder~validateDeliveryDate.
 
     METHODS validateFirstName FOR VALIDATE ON SAVE
       IMPORTING keys FOR SalesOrder~validateFirstName.
@@ -61,9 +64,41 @@ CLASS lhc_SalesOrder IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setOrderStatus.
+
+    DATA lv_status TYPE zde_orderstatus_8080.
+
+
+    lv_status = '1'.
+
+   read entities of z_r_sorders_h_8080  in local mode
+         entity SalesOrder
+         fields ( OrderStatus )
+         with corresponding #( keys )
+         result data(orders).
+
+    delete orders where OrderStatus is not initial.
+
+    check orders is not initial.
+
+
+
+    modify entities of z_r_sorders_h_8080 in local mode
+           entity SalesOrder
+           update fields ( OrderStatus )
+           with value #( for order in orders index into i ( %tky     = order-%tky
+                                                              OrderStatus = lv_status
+                                                             ) ).
+
+
   ENDMETHOD.
 
   METHOD setOrderNumber.
+
+
+  DATA lv_system_date TYPE d.
+
+  lv_system_date = cl_abap_context_info=>get_system_date( ).
+
 
    read entities of z_r_sorders_h_8080  in local mode
          entity SalesOrder
@@ -81,9 +116,10 @@ CLASS lhc_SalesOrder IMPLEMENTATION.
 
     modify entities of z_r_sorders_h_8080 in local mode
            entity SalesOrder
-           update fields ( OrderID )
+           update fields ( OrderID CreateOn )
            with value #( for order in orders index into i ( %tky     = order-%tky
-                                                              OrderID = max_OrderId + i ) ).
+                                                              OrderID = max_OrderId + i
+                                                              CreateOn = lv_system_date ) ).
 
 
   ENDMETHOD.
@@ -92,6 +128,43 @@ CLASS lhc_SalesOrder IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD validateEmail.
+  ENDMETHOD.
+
+  METHOD validateDeliveryDate.
+
+      read ENTITIES OF z_r_sorders_h_8080 in local mode
+      ENTITY SalesOrder
+      FIELDS (  DeliveryDate )
+      WITH CORRESPONDING #( keys )
+      RESULT data(salesorders).
+
+      loop at salesorders into data(salesorder).
+
+          append value #(  %tky         = salesorder-%tky
+                          %state_area  = 'VALIDATE_DATES' ) to reported-salesorder.
+
+          if salesorder-DeliveryDate is INITIAL.
+
+
+              append value #( %tky = salesorder-%tky ) to failed-salesorder.
+
+              APPEND value #( %tky = salesorder-%tky
+                              %state_area = 'VALIDATE_DATES'
+                              %msg =  new_message(
+                                                        id = 'ZCLMSSAGE_SORDER_001'
+                                                        number = 000
+                                                        severity = if_abap_behv_message=>severity-error )
+                                                        %element-DeliveryDate = if_abap_behv=>mk-on ) to reported-salesorder.
+
+          endif.
+
+
+
+      endloop.
+
+
+
+
   ENDMETHOD.
 
   METHOD validateFirstName.

@@ -19,10 +19,15 @@ as projection on z_r_sorders_h_8080
     Country,
     CreateOn,
     DeliveryDate,
+    @Consumption.valueHelpDefinition: [{ entity: { name: 'Z_I_Sales_Order_Status_VH',
+                                                         element: 'SOStatus'},
+                                               useForValidation: true }]
     OrderStatus,
+    _SOStatus._Text.Text as SOStatusText : localized,
     ImageUrl,
     LocalLastChangedAt,
     LastChangedAt,
     /* Associations */
-    _OrderItem : redirected to composition child z_c_sord_item_8080
+    _OrderItem : redirected to composition child z_c_sord_item_8080,
+    _SOStatus
 }

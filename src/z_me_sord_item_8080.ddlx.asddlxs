@@ -23,19 +23,22 @@ annotate entity z_c_sord_item_8080
          identification: [ { position: 20 } ] }
    Name;
    @UI: { lineItem:       [ { position: 30, importance: #HIGH } ],
-         identification: [ { position: 30 } ] }
+         identification: [ { position: 30 }  ]
+          }
    Description;
    @UI: { lineItem:       [ { position: 40, importance: #MEDIUM } ],
-         identification: [ { position: 40 } ] }
+         identification: [ { position: 40 } ] 
+         }
    ReselaseDate;
-   @UI: { lineItem:       [ { position: 50, importance: #MEDIUM } ],
+   @UI: {  lineItem:       [ { position: 50, importance: #MEDIUM } ],
          identification: [ { position: 50 } ] }
    DiscountDate;
    @UI: { lineItem:       [ { position: 60, importance: #MEDIUM } ],
          identification: [ { position: 60 } ] }
    Price;
-   @UI: { lineItem:       [ { position: 70, importance: #MEDIUM } ],
-         identification: [ { position: 70 } ] }
+   @UI.hidden: true  
+//   @UI: { lineItem:       [ { position: 70, importance: #MEDIUM } ],
+//         identification: [ { position: 70 } ] }
    CurrencyCode;
    @UI: { lineItem:       [ { position: 80, importance: #MEDIUM } ],
          identification: [ { position: 80 } ] }
@@ -49,8 +52,9 @@ annotate entity z_c_sord_item_8080
    @UI: { lineItem:       [ { position: 120, importance: #LOW } ],
          identification: [ { position: 120 } ] }
    Quantity;
-   @UI: { lineItem:       [ { position: 140, importance: #LOW } ],
-         identification: [ { position: 140 } ] }
+   @UI.hidden: true
+//   @UI: { lineItem:       [ { position: 140, importance: #LOW } ],
+//         identification: [ { position: 140 } ] }
    UnitMeasure;
    @UI.hidden: true
    LastChangedAt;

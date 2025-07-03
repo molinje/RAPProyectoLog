@@ -25,23 +25,25 @@ etag master LocalLastChangedAt
 
   field ( readonly )    OrderID,
                         CreateOn,
-                        DeliveryDate,
-                        OrderStatus ,
+
                         LocalLastChangedAt,
                         LastChangedAt;
 
  field ( mandatory )    Email,
                         FirstName,
                         LastName,
-                        Country;
+                        Country,
+                        DeliveryDate,
+                        OrderStatus ;
 
  // ---- Determinaciones o metodos que la aplicacion va a generar en la clase
  // MMetodo para determinar el campo OrderID
  determination setOrderNumber on save { create;} // siempre se calcula
- determination setOrderStatus on modify { create;} // siempre se calcula
+ determination setOrderStatus on save { create;} // siempre se calcula
 
   // -- validaciones --
   validation validateEmail on save { create; field Email; }
+  validation validateDeliveryDate on save { create; field DeliveryDate; }
   validation validateCountry on save { create; field Country; }
   validation validateFirstName on save { create; field FirstName; }
   validation validateLastName on save { create; field LastName; }
@@ -75,6 +77,7 @@ etag master LocalLastChangedAt
   {
 
     validation validateEmail;
+    validation validateDeliveryDate;
     validation validateCountry;
     validation validateFirstName;
     validation validateLastName;
@@ -119,8 +122,8 @@ etag master LastChangedAt
 
   field ( numbering : managed, readonly ) OrderItemUUID;
   field ( readonly ) OrderUUID;
-  field ( readonly ) SorderID, ReselaseDate, LastChangedAt;
-  field (mandatory ) OrderItemID, Name, Description, DiscountDate, Price,
+  field ( readonly ) SorderID, ReselaseDate, LastChangedAt, OrderItemID;
+  field (mandatory ) Name, Description, DiscountDate, Price,
                      Height, Width, Depth, Quantity;
 
 
